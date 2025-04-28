@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Button, Card, Form, Modal } from 'react-bootstrap';
 import { addComment } from '../store/reducers/blogSlice';
 import { AppDispatch, RootState } from '../store';
+import "../style/BlogDetail.css"
 
 const BlogDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -46,7 +47,7 @@ const BlogDetail: React.FC = () => {
             variant="top"
             src={blog.imageUrl}
             alt={blog.title}
-            style={{ width: '960px', height: '480px', objectFit: 'cover' }}
+            className='image-container'
           />
         </div>
         <Card.Body>
