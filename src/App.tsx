@@ -1,26 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, Suspense, lazy } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { AppDispatch } from './store';
+import { setBlogs } from './store/reducers/blogSlice';
+import { blogsData } from './data/blogsData';
+import Header from './components/Header';
 
-function App() {
+
+const BlogList = lazy(() => import('./components/BlogList'));
+const BlogDetail = lazy(() => import('./components/BlogDetail'));
+
+const App: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    dispatch(setBlogs(blogsData));
+  }, [dispatch]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="container my-5">
+        <Header />
+      
+        <Suspense fallback={<div>Loading...</div>}>
+          <Routes>
+            <Route path="/blogsite" element={<BlogList />} />
+            <Route path="/blog/:id" element={<BlogDetail />} />
+          </Routes>
+        </Suspense>
+      </div>
+    </Router>
   );
-}
+};
 
 export default App;
